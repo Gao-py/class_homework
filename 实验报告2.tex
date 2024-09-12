@@ -1,0 +1,304 @@
+% !TeX program = xelatex
+
+\documentclass[UTF8]{ctexart}
+\usepackage{hyperref}
+
+\title{实践报告}
+\author{高鹏宇\\ 学号：2302007025}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{一、练习内容与结果}
+
+\subsection*{（一）shell脚本}
+
+\begin{enumerate}
+  \item \textbf{使用ls命令列出所有文件（包括隐藏文件），并以人类可读的格式、按最近访问顺序排序，并以彩色文本显示输出结果。}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    ls -la --time-style=+%h %d %n --color=auto
+    \end{verbatim}
+    \item 说明：
+    \begin{itemize}
+      \item -la：显示所有文件和目录，包括隐藏文件（以 . 开头的文件）。
+      \item --time-style=+\%h \%d \%n：按最近访问时间排序。
+      \item --color=auto：以彩色文本显示输出结果。
+    \end{itemize}
+  \end{itemize}
+
+  \item \textbf{编写两个 bash 函数 marco 和 polo}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    #!/usr/bin/env bash
+
+    # marco 函数：保存当前目录
+    marco() {
+        marco_dir=$(pwd)
+        echo "Marco: Current directory saved as $marco_dir"
+    }
+
+    # polo 函数：无论当前目录是什么，都返回 marco 保存的目录
+    polo() {
+        echo "Polo: Returning to $marco_dir"
+        cd "$marco_dir"
+    }
+    \end{verbatim}
+    \item 说明：
+    \begin{itemize}
+      \item 将上述代码保存到 marco.sh 文件中。
+      \item 在终端中运行 source marco.sh 来加载函数。
+      \item 运行 marco 来保存当前目录。
+      \item 无论当前目录是什么，运行 polo 都会返回到 marco 保存的目录。
+    \end{itemize}
+  \end{itemize}
+
+\item \textbf{随机数脚本}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    #!/usr/bin/env bash
+
+    # 生成一个0到99之间的随机数
+    n=$(( RANDOM % 100 ))
+
+    # 检查随机数是否等于42
+    if [[ n -eq 42 ]]; then
+        # 如果等于42，则打印错误信息到标准输出
+        echo "Something went wrong"
+        # 打印错误信息到标准错误输出
+        >&2 echo "The error was using magic numbers"
+        # 退出脚本并返回错误码1
+        exit 1
+    fi
+    \end{verbatim}
+    \item 说明：
+    \begin{itemize}
+      \item 使用 RANDOM 变量生成一个0到99之间的随机数，并将其赋值给变量 n。
+      \item 使用 if 语句检查变量 n 是否等于42。
+      \item 如果 n 等于42，脚本会执行两个 echo 命令：
+      \begin{itemize}
+        \item 第一个 echo 将错误信息打印到标准输出（通常是终端）。
+        \item 第二个 echo 将错误信息重定向到标准错误输出（通常是终端）。
+      \end{itemize}
+      \item 然后，脚本通过 exit 1 命令退出，并返回一个非零的错误码，表示发生了错误。
+    \end{itemize}
+  \end{itemize}
+
+  \item \textbf{编写脚本，运行直到出错并记录输出}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    #!/usr/bin/env bash
+
+    # 定义要运行的命令
+    command_to_run="your_command_here"
+
+    # 初始化尝试次数
+    attempts=0
+
+    # 循环运行命令，直到出错
+    while ! $command_to_run; do
+        # 增加尝试次数
+        ((attempts++))
+
+        # 捕获标准输出和标准错误
+        # 将标准输出重定向到文件
+        $command_to_run > output.log 2>&1
+    done
+
+    # 检查是否出错
+    if [ $? -ne 0 ]; then
+        # 将错误信息重定向到错误日志文件
+        cat output.log > error.log
+
+        echo "The command failed after $attempts attempts." >> error.log
+
+        echo "The output was:"
+
+        cat error.log
+    else
+        echo "The command did not fail after $attempts attempts."
+    fi
+    \end{verbatim}
+    \item 说明：
+    \begin{itemize}
+      \item 请将代码替换为你想要运行的实际命令。
+      \item 使用while循环运行命令，直到命令出错（即命令返回非零退出状态）。
+      \item 每次命令运行时，都会将标准输出和标准错误重定向到output.log文件。
+      \item 一旦命令出错，将 output.log 文件的内容复制到 error.log 文件，并记录尝试次数。
+      \item 最后，脚本会输出错误日志文件的内容。
+    \end{itemize}
+  \end{itemize}
+
+  \item \textbf{编写命令或脚本递归查找最近使用的文件}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    find . -type f -printf "%T+ %p\n" | sort -r
+    \end{verbatim}
+    \item 说明：
+    \begin{itemize}
+      \item find . -type f -printf "%T+ %p\n"：递归查找所有文件，并打印它们的最后访问时间（%T+）和路径（%p）。
+      \item sort -r：按时间倒序排序。
+    \end{itemize}
+  \end{itemize}
+
+  \item \textbf{创建目录}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    mkdir new_directory
+    \end{verbatim}
+    \item 说明：
+    \begin{itemize}
+      \item mkdir：创建新目录。
+    \end{itemize}
+  \end{itemize}
+
+  \item \textbf{统计当前目录下文件数目}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    find . -type f | wc -l
+    \end{verbatim}
+    \item 说明：
+    \begin{itemize}
+      \item find . -type f：查找当前目录下的所有文件。
+      \item wc -l：计算行数，即文件数量。
+    \end{itemize}
+  \end{itemize}
+
+  \item \textbf{复制文件}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    cp /path/to/source.txt /path/to/destination.txt
+    \end{verbatim}
+    \item 说明：
+    \begin{itemize}
+      \item cp：复制文件。
+      \item /path/to/source.txt：源文件路径。
+      \item /path/to/destination.txt：目标文件路径。
+    \end{itemize}
+  \end{itemize}
+
+  \item \textbf{递归查找并删除特定扩展名的文件}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    find . -type f -name "*.log" -exec rm -f {} \;
+    \end{verbatim}
+    \item 说明：
+    \begin{itemize}
+      \item find . -type f -name "*.log"：递归查找所有扩展名为 .log 的文件。
+      \item -exec rm -f {} \;：对找到的每个文件执行 rm -f 命令进行删除。
+    \end{itemize}
+  \end{itemize}
+
+  \item \textbf{将当前目录下的所有 .jpg 图片文件压缩为一个ZIP文件}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    zip -r images.zip *.jpg
+    \end{verbatim}
+    \item 说明：
+    \begin{itemize}
+      \item zip -r images.zip：创建一个名为 images.zip 的压缩文件。
+      \item *.jpg：将当前目录下所有 .jpg 文件添加到压缩文件中。
+    \end{itemize}
+  \end{itemize}
+\end{enumerate}
+
+
+\subsection*{（二）Vim使用}
+
+\begin{enumerate}
+  \item \textbf{打开文件}
+  \begin{verbatim}
+  vim filename
+  \end{verbatim}
+
+  \item \textbf{进入插入模式}
+  \begin{itemize}
+    \item i 进入插入模式，在光标前插入。
+    \item I 进入插入模式，在行首插入。
+    \item a 进入插入模式，在光标后插入。
+    \item A 进入插入模式，在行尾插入。
+  \end{itemize}
+
+  \item \textbf{退出插入模式}
+  \begin{verbatim}
+  Esc 退出插入模式，返回普通模式。
+  \end{verbatim}
+
+  \item \textbf{保存文件}
+  \begin{verbatim}
+  :w 写入文件。
+  :w filename 将文件保存为另一个名字。
+  \end{verbatim}
+
+  \item \textbf{退出Vim}
+  \begin{verbatim}
+  :q 退出Vim。
+  :q! 强制退出，不保存更改。
+  \end{verbatim}
+
+  \item \textbf{保存并退出}
+  \begin{verbatim}
+  :wq 保存更改并退出。
+  :x 同 :wq。
+  \end{verbatim}
+
+  \item \textbf{撤销和重做}
+  \begin{verbatim}
+  u 撤销。
+  Ctrl + r 重做。
+  \end{verbatim}
+
+  \item \textbf{复制和粘贴}
+  \begin{verbatim}
+  yy 复制整行。
+  3yy 复制三行。
+  p 粘贴。
+  d 删除（剪切）。
+  dd 删除（剪切）整行。
+  \end{verbatim}
+
+  \item \textbf{查找和替换}
+  \begin{verbatim}
+  /pattern 查找“pattern”。
+  n 跳转到下一个匹配项。
+  N 跳转到上一个匹配项。
+  :%s/old/new/g 全局替换“old”为“new”。
+  \end{verbatim}
+
+  \item \textbf{多文件编辑}
+  \begin{verbatim}
+  :e filename 打开另一个文件。
+  :bn 切换到下一个文件。
+  :bp 切换到上一个文件。
+  \end{verbatim}
+
+  \item \textbf{撤销历史}
+  \begin{verbatim}
+  :u 撤销。
+  :undolist 列出撤销历史。
+  \end{verbatim}
+
+  \item \textbf{全局命令}
+  \begin{verbatim}
+  :g 执行全局命令，例如 :g/^$/d 删除所有空行。
+  \end{verbatim}
+\end{enumerate}
+
+\section*{二、解题感悟}
+
+在使用过程中，我发现熟练使用 Shell 脚本可以极大地提高自动化任务的效率。我们编写好合适的Shell 脚本，可以通过命令行执行复杂的任务，这对于批量处理文件和自动化工作流程非常有用。而Vim 作为一个强大的文本编辑器，通过熟练掌握其快捷键和命令，可以非常快速地编辑文本。除此之外，Vim 在文本处理方面非常强大，特别是对于大文件的编辑，它的性能和效率往往超过其他文本编辑器。无论是 Shell 还是 Vim，我们都需要持续学习和实践来提高个人能力。
+
+Github地址：\url{https://github.com/Gao-py/class_homework}
+\end{document}

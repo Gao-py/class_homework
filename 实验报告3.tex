@@ -1,0 +1,174 @@
+% !TeX program = xelatex
+
+\documentclass[UTF8]{ctexart}
+\usepackage{graphicx}
+
+\title{实践报告}
+\author{高鹏宇\\ 学号：2302007025}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{一、练习内容与结果}
+
+\subsection*{（一）命令行环境样例}
+\begin{enumerate}
+  \item 删除指定目录：
+  \begin{verbatim}
+  rm -r directory_to_delete
+  \end{verbatim}
+  
+  \item 复制文件到指定目录：
+  \begin{verbatim}
+  cp source_file.txt destination_directory/
+  \end{verbatim}
+  
+  \item 查看文件内容：
+  \begin{verbatim}
+  cat file.txt
+  \end{verbatim}
+  
+  \item 查找包含特定文本的文件：
+  \begin{verbatim}
+  grep "search_text" *
+  \end{verbatim}
+  
+  \item 压缩文件或目录：
+  \begin{verbatim}
+  tar -czvf archive_name.tar.gz directory_to_compress
+  \end{verbatim}
+  
+  \item 解压文件：
+  \begin{verbatim}
+  tar -xzvf archive_name.tar.gz
+  \end{verbatim}
+\end{enumerate}
+
+\subsection*{（二）Python入门基础样例}
+\begin{enumerate}
+  \item 定义函数：
+  \begin{verbatim}
+  def greet(name):
+      return f"Hello, {name}!"
+  \end{verbatim}
+  结果：定义了一个名为 greet 的函数，它接受一个参数 name 并返回一个格式化的问候语。
+  
+  \item 调用函数：
+  \begin{verbatim}
+  print(greet("Alice"))
+  \end{verbatim}
+  结果：打印输出 Hello, Alice! 到控制台。
+  
+  \item 列表操作：
+  \begin{verbatim}
+  fruits = ["apple", "banana", "cherry"]
+  fruits.append("orange")
+  \end{verbatim}
+  结果：在列表 fruits 中添加了一个元素 "orange"，现在 fruits 列表的内容是 ["apple", "banana", "cherry", "orange"]。
+  
+  \item 字典操作：
+  \begin{verbatim}
+  person = {"name": "Alice", "age": 25}
+  print(person["name"])
+  \end{verbatim}
+  结果：打印输出 Alice 到控制台，这是字典 person 中键 "name" 对应的值。
+  
+  \item 异常处理：
+  \begin{verbatim}
+  try:
+      result = 10 / 0
+  except ZeroDivisionError:
+      print("Cannot divide by zero!")
+  \end{verbatim}
+  结果：尝试执行除以零的操作，这会引发一个 ZeroDivisionError 异常。程序捕获这个异常并打印输出 Cannot divide by zero! 到控制台。
+  
+  \item 文件读写：
+  \begin{verbatim}
+  with open("file.txt", "w") as f:
+      f.write("Hello, World!")
+  \end{verbatim}
+  结果：创建（或覆盖）一个名为 file.txt 的文件，并向其中写入字符串 Hello, World!。如果文件不存在，它会被创建；如果文件已存在，其内容会被覆盖。
+\end{enumerate}
+
+\subsection*{（三）Python视觉应用样例}
+\begin{enumerate}
+  \item 使用OpenCV读取图像：
+  \begin{verbatim}
+  import cv2
+  image = cv2.imread('image.jpg')
+  \end{verbatim}
+  结果：加载名为 image.jpg 的图像文件到变量 image 中。如果文件不存在或路径错误，image 将是 None。
+  
+  \item 显示图像：
+  \begin{verbatim}
+  cv2.imshow('Image', image)
+  cv2.waitKey(0)
+  cv2.destroyAllWindows()
+  \end{verbatim}
+  结果：在窗口中显示图像。cv2.waitKey(0) 使得窗口持续打开直到任意键被按下。之后，关闭所有OpenCV创建的窗口
+  
+  \item 转换为灰度图像：
+  \begin{verbatim}
+  gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+  \end{verbatim}
+    结果：将 image 转换为灰度图像且保存。
+
+  \item 保存图像：
+  \begin{verbatim}
+  cv2.imwrite('gray_image.jpg', gray_image)
+  \end{verbatim}
+  结果：将灰度图像保存。
+
+  \item 使用Pillow打开图像：
+  \begin{verbatim}
+  from PIL import Image
+  img = Image.open('image.jpg')
+  \end{verbatim}
+  结果：使用Pillow库打开 image.jpg 文件并存储在变量 img 中。
+  
+  \item 调整图像大小：
+  \begin{verbatim}
+  img_resized = img.resize((100, 100))
+  \end{verbatim}
+  结果：将图像的大小调整为 100x100 像素，并存储在变量中。
+  
+  \item 绘制图形（Matplotlib）：
+  \begin{verbatim}
+  import matplotlib.pyplot as plt
+  plt.plot([1, 2, 3], [4, 5, 6])
+  plt.show()
+  \end{verbatim}
+  结果：在图形界面中绘制一个简单的线图，x轴为 [1, 2, 3]，y轴为 [4, 5, 6]。
+  
+  \item 显示图像（Pillow）：
+  \begin{verbatim}
+  img.show()
+  \end{verbatim}
+  结果：使用默认的图像查看器显示图像 img。
+  
+  \item 图像滤镜（Pillow）：
+  \begin{verbatim}
+  from PIL import ImageFilter
+  img_filtered = img.filter(ImageFilter.BLUR)
+  \end{verbatim}
+  结果：对图像应用模糊滤镜，并将结果存储在变量中。
+  
+  \item 使用OpenCV进行边缘检测：
+  \begin{verbatim}
+  edges = cv2.Canny(image, 100, 200)
+  cv2.imshow('Edges', edges)
+  \end{verbatim}
+  结果：使用Canny算法对图像 image 进行边缘检测，并将结果存储在 edges 变量中。然后显示边缘检测的结果。
+\end{enumerate}
+
+\section*{二、解题感悟}
+
+命令行环境是一个强大的工具，它允许用户通过文本命令直接与操作系统交互。在使用过程中，我发现大多数命令行命令在不同的操作系统（如Linux、macOS和Windows的特定版本）中都是通用的，这使得跨平台工作变得更加容易。
+
+在使用Python的过程中，我发现相较于C语言，Python的语法更简单直观，大量的库和框架，可以用于各种应用，是一种非常泛用的工具。除此之外，得益于像OpenCV、Pillow和Matplotlib这样的库，Python在视觉应用方面也非常强大。我们可以使用OpenCV和Pillow，可以轻松进行图像读取、编辑、转换和保存。
+
+总结来说，命令行环境、Python都是强大的工具，它们提供了广泛的功能和灵活性，可以帮助我们高效地完成任务。我们尽力去学会熟练掌握它们。
+
+\end{document}

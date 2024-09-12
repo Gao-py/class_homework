@@ -1,0 +1,229 @@
+% !TeX program = xelatex
+
+\documentclass[UTF8]{ctexart}
+\usepackage{hyperref}
+
+\title{实践报告}
+\author{高鹏宇\\ 学号：2302007025}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{一、练习内容和结果}
+
+\subsection*{（一）、Git部分：}
+
+\begin{enumerate}
+  \item \textbf{git config –global：配置全局Git环境}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    git config --global user.name "你的用户名"
+    git config --global user.email "你的邮箱"
+    \end{verbatim}
+    \item 说明：设置全局用户名和邮箱，以便每次提交时自动使用这些信息。
+  \end{itemize}
+
+  \item \textbf{git init：初始化本地仓库}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    git init
+    \end{verbatim}
+    \item 说明：在当前目录创建一个新的Git仓库。
+  \end{itemize}
+
+  \item \textbf{git add：添加文件到暂存区}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    git add <file>
+    \end{verbatim}
+    \item 说明：将指定文件或所有更改添加到暂存区。
+  \end{itemize}
+
+  \item \textbf{git commit -m：提交到本地仓库}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    git commit -m "提交信息"
+    \end{verbatim}
+    \item 说明：将暂存区的更改提交到本地仓库，并附上提交信息。
+  \end{itemize}
+
+  \item \textbf{git log：查看历史提交日志}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    git log
+    \end{verbatim}
+    \item 说明：显示本地仓库的所有提交记录。
+  \end{itemize}
+
+  \item \textbf{git branch：查看分支}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    git branch
+    \end{verbatim}
+    \item 说明：列出本地仓库的所有分支。
+  \end{itemize}
+
+  \item \textbf{git clone：克隆远程仓库}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    git clone <repository-url>
+    \end{verbatim}
+    \item 说明：将远程仓库克隆到本地。
+  \end{itemize}
+
+  \item \textbf{git status：查看当前仓库状态}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    git status
+    \end{verbatim}
+    \item 说明：显示当前工作目录的状态，包括未跟踪的文件、已修改但未暂存的文件等。
+  \end{itemize}
+
+  \item \textbf{git log filename：查看单个文件的提交历史}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    git log -- <file>
+    \end{verbatim}
+    \item 说明：显示指定文件的提交历史。
+  \end{itemize}
+
+  \item \textbf{git rm：删除文件}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    git rm <file>
+    \end{verbatim}
+    \item 说明：从Git仓库中删除文件，同时将此更改添加到暂存区。
+  \end{itemize}
+\end{enumerate}
+
+\subsection*{（二）、LaTeX部分：}
+
+\begin{enumerate}
+  \item \textbf{声明类：}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    \documentclass[UTF8]{ctexart}
+    \end{verbatim}
+    \item 说明：设置文档为中文文章。
+  \end{itemize}
+
+  \item \textbf{文档类型：}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    \documentclass{article}
+    \end{verbatim}
+    \item 说明：设置文档类型为article，还有report和book可供选择。
+  \end{itemize}
+
+  \item \textbf{换行：}
+  \begin{itemize}
+    \item 单行换行：
+    \begin{verbatim}
+    \\[optional offset]
+    \end{verbatim}
+    \item 说明：在一行的末尾使用，offset可选，用于调整行间距。
+  \end{itemize}
+
+  \item \textbf{正文：}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    \begin{document}
+    ...
+    \end{document}
+    \end{verbatim}
+    \item 说明：正文内容位于这两个命令之间。
+  \end{itemize}
+
+  \item \textbf{注释：}
+  \begin{itemize}
+    \item 单行注释：
+    \begin{verbatim}
+    % 注释内容
+    \end{verbatim}
+    \item 多行注释：
+    \begin{verbatim}
+    \iffalse
+    注释内容
+    \fi
+    \end{verbatim}
+  \end{itemize}
+
+  \item \textbf{换新页：}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    \newpage
+    \end{verbatim}
+    \item 说明：在文档中创建新的一页。
+  \end{itemize}
+
+  \item \textbf{标题级别：}
+  \begin{itemize}
+    \item 一级标题：
+    \begin{verbatim}
+    \section{一级标题}
+    \end{verbatim}
+    \item 二级标题：
+    \begin{verbatim}
+    \subsection{二级标题}
+    \end{verbatim}
+    \item 三级标题：
+    \begin{verbatim}
+    \subsubsection{三级标题}
+    \end{verbatim}
+  \end{itemize}
+
+  \item \textbf{段落：}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    \par
+    \end{verbatim}
+    \item 说明：表示一段的结束。
+  \end{itemize}
+
+  \item \textbf{字体：}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    {\fontname 内容}
+    \end{verbatim}
+    \item 说明：设置字体，如\texttt{\songti}表示宋体。
+  \end{itemize}
+
+  \item \textbf{大小：}
+  \begin{itemize}
+    \item 命令：
+    \begin{verbatim}
+    {\fontsize{size}{baselineskip} 内容}
+    \end{verbatim}
+    \item 说明：设置字体大小，size为字体大小，baselineskip为行距。
+  \end{itemize}
+\end{enumerate}
+
+\section*{二、解题感悟}
+
+Git作为一种版本控制系统，让代码和文档的版本管理变得简单而高效。在学习过程中，我发现掌握上述的Git命令，可以让我们轻松地调试代码，解决问题，大大提高了开发效率和代码质量。
+
+LaTex是一门论文语言，在各个领域都有很多的应用。通过学习LaTex，我基本掌握了使用和创建LaTex文档的方法。我发现LaTeX具有很强的拓展性，通过使用不同的宏包，几乎可以满足所有排版需。除此之外，LaTeX文档的源代码是纯文本格式，这意味着它们可以在任何文本编辑器中打开和编辑，也便于版本控制和备份。
+
+通过Git和LaTeX的学习与实践，我不仅提升了技术技能，也对软件开发和文档撰写有了更深入的理解。这些工具是我们未来日常工作和学习中不可或缺的一部分。
+
+Github地址：\url{https://github.com/Gao-py/class_homework}
+
+\end{document}
