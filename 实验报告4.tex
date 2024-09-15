@@ -1,0 +1,333 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\title{实践报告}
+\author{高鹏宇\\ 学号：2302007025}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{一、练习内容与结果}
+
+\subsection*{（一）程序调试和性能分析}
+\begin{enumerate}
+  \item 启动 PDB：
+  \begin{verbatim}
+  import pdb  # 导入 Python 调试器模块
+  pdb.set_trace()
+  for i in range(100):
+      if i % 2 == 0:
+          print(i)
+  \end{verbatim}
+  结果：你可以在代码中需要调试的地方插入 \texttt{import pdb; pdb.set\_trace()}，程序运行到这一行时会暂停，进入调试模式。
+  
+  \item 常用 PDB 命令：
+  \begin{itemize}
+    \item n (next)：执行下一行代码，不会进入函数内部。
+    \item s (step)：进入当前行调用的函数。
+    \item c (continue)：继续执行程序，直到遇到下一个断点或程序结束。
+    \item l (list)：显示当前代码行以及周围的代码。
+    \item p (print)：打印变量的值。
+    \item h (help)：显示帮助信息。
+    \item b (break)：设置断点，可以在指定行或指定函数处设置断点。
+    \item cl (clear)：清除断点。
+    \item q (quit)：退出调试。
+  \end{itemize}
+  
+  \item cProfile：
+  \begin{verbatim}
+  import cProfile
+  def my_function():
+      for i in range(100000):
+          pass
+  cProfile.run('my_function()')
+  \end{verbatim}
+  结果：cProfile 是 Python 标准库中的一个性能分析工具，它提供了程序的详细性能分析报告。
+  
+  \item timeit：
+  \begin{verbatim}
+  import timeit
+  def my_function():
+      for i in range(100000):
+          pass
+  timeit.timeit('my_function()', number=1000, globals=globals())
+  \end{verbatim}
+  结果：timeit 模块用于测量小代码片段的执行时间，它通过多次运行代码来提供准确的时间估计。
+  
+  \item line\_profiler：
+  \begin{verbatim}
+  from line_profiler import LineProfiler
+  def my_function():
+      a = 1
+      b = a + 1
+      for i in range(100000):
+          b += i
+  lp = LineProfiler()
+  lp_wrapper = lp(my_function)
+  lp_wrapper()
+  lp.print_stats()
+  \end{verbatim}
+  结果：line\_profiler 是一个第三方库，它可以提供代码每一行的执行时间。
+  
+  \item memory\_profiler：
+  \begin{verbatim}
+  from memory_profiler import profile
+  @profile
+  def my_function():
+      lst = [i for i in range(10000)]
+      return lst
+  my_function()
+  \end{verbatim}
+  结果：memory\_profiler 用于分析内存使用情况，它可以显示每行代码的内存消耗。
+\end{enumerate}
+
+\subsection*{（二）元编程}
+\begin{enumerate}
+  \item 动态函数创建：
+  \begin{verbatim}
+  def create_adder(n):
+      def adder(x):
+          return x + n
+      return adder
+
+  add_five = create_adder(5)
+  print(add_five(10))
+  \end{verbatim}
+  结果：使用高阶函数创建了一个加法函数 \texttt{add\_five}，并输出 15。
+  
+  \item 使用 \texttt{locals} 和 \texttt{globals} 动态修改变量：
+  \begin{verbatim}
+  def add_key_to_dict(key, value):
+      globals()[key] = value
+
+  add_key_to_dict('new_var', 123)
+  print(new_var)
+  \end{verbatim}
+  结果：在全局作用域中创建了一个名为 \texttt{new\_var} 的变量，并赋值为 123。
+  
+  \item 使用 \texttt{type} 动态创建类：
+  \begin{verbatim}
+  def create_class(name, bases, attrs):
+      return type(name, bases, attrs)
+
+  class_attrs = {'x': 5, 'y': 10, '__add__': lambda self: self.x + self.y}
+  MyClass = create_class('MyClass', (object,), class_attrs)
+  obj = MyClass()
+  print(obj.x + obj.y)
+  \end{verbatim}
+  结果：动态创建了一个名为 \texttt{MyClass} 的类，并输出 15。
+  
+  \item 使用 \texttt{setattr} 动态设置属性：
+  \begin{verbatim}
+  class MyClass:
+      pass
+
+  setattr(MyClass, 'new_method', lambda self: 'Hello, World!')
+  print(MyClass.new_method())
+  \end{verbatim}
+  结果：为 \texttt{MyClass} 类动态添加了一个方法 \texttt{new\_method}，并输出 "Hello, World!"。
+  
+  \item 使用 \texttt{dir} 动态获取对象属性：
+  \begin{verbatim}
+  class MyClass:
+      def __init__(self):
+          self.x = 5
+
+  my_obj = MyClass()
+  print(dir(my_obj))
+  \end{verbatim}
+  结果：输出 \texttt{MyClass} 实例的所有属性和方法。
+  
+  \item 使用 \texttt{compile} 动态执行代码：
+  \begin{verbatim}
+  code = "print('Hello, World!')"
+  compiled_code = compile(code, '<string>', 'exec')
+  exec(compiled_code)
+  \end{verbatim}
+  结果：动态编译并执行了代码，输出 "Hello, World!"。
+  
+  \item 使用 \texttt{inspect} 模块检查对象：
+  \begin{verbatim}
+  import inspect
+
+  def my_function(x, y):
+      return x + y
+  print(inspect.signature(my_function))
+  \end{verbatim}
+  结果：输出函数 \texttt{my\_function} 的签名。
+\end{enumerate}
+
+
+\subsection*{（三）PyTorch视觉应用}
+\begin{enumerate}
+  \item 张量初始化：
+  \begin{enumerate}
+    \item 直接从数据创建张量：
+    \begin{verbatim}
+    data = [[1, 2], [3, 4]]
+    x_data = torch.tensor(data)
+    \end{verbatim}
+    
+    \item 从 NumPy 数组创建张量：
+    \begin{verbatim}
+    import numpy as np
+    np_array = np.array(data)
+    x_np = torch.from_numpy(np_array)
+    \end{verbatim}
+    
+    \item 从另一个张量创建新张量：
+    \begin{verbatim}
+    x_ones = torch.ones_like(x_data) # retains the properties of x_data
+    print(f"Ones Tensor: \n {x_ones} \n")
+    x_rand = torch.rand_like(x_data, dtype=torch.float) # overrides the datatype of x_data
+    print(f"Random Tensor: \n {x_rand} \n")
+    \end{verbatim}
+    结果：
+    \begin{verbatim}
+    Ones Tensor:
+     tensor([[1, 1],
+            [1, 1]])
+    Random Tensor:
+     tensor([[0.3947, 0.4858],
+            [0.9286, 0.8274]], dtype=torch.float32)
+    \end{verbatim}
+  \end{enumerate}
+  
+  \item 张量属性：
+  \begin{verbatim}
+  import torch
+  tensor = torch.rand(3, 4)
+  print(f"Shape of tensor: {tensor.shape}")
+  print(f"Datatype of tensor: {tensor.dtype}")
+  print(f"Device tensor is stored on: {tensor.device}")
+  \end{verbatim}
+  结果：
+  \begin{verbatim}
+  Shape of tensor: torch.Size([3, 4])
+  Datatype of tensor: torch.float32
+  Device tensor is stored on: cpu
+  \end{verbatim}
+  
+  \item NumPy 桥接：
+  \begin{enumerate}
+    \item Tensor 到 NumPy 数组：
+    \begin{verbatim}
+    t = torch.ones(5)
+    print(f"t: {t}")
+    n = t.numpy()
+    print(f"n: {n}")
+    \end{verbatim}
+    结果：
+    \begin{verbatim}
+    t: tensor([1., 1., 1., 1., 1.])
+    n: [1. 1. 1. 1. 1.]
+    \end{verbatim}
+    
+    \item NumPy 数组到 Tensor：
+    \begin{verbatim}
+    import numpy as np
+    n = np.ones(5)
+    t = torch.from_numpy(n)
+    np.add(n, 1, out=n)
+    print(f"t: {t}")
+    print(f"n: {n}")
+    \end{verbatim}
+    结果：
+    \begin{verbatim}
+    t: tensor([2., 2., 2., 2., 2.], dtype=torch.float64)
+    n: [2. 2. 2. 2. 2.]
+    \end{verbatim}
+  \end{enumerate}
+  
+  \item 创建模型：
+  \begin{verbatim}
+  import torch.nn as nn
+  model = nn.Sequential(
+      nn.Linear(20, 10),
+      nn.ReLU(),
+      nn.Linear(10, 2),
+      nn.LogSoftmax(dim=1)
+  )
+  \end{verbatim}
+  
+  \item GPU 加速：
+  \begin{verbatim}
+  device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+  x = torch.tensor([1, 2, 3]).to(device)
+  print(x)
+  \end{verbatim}
+  结果：
+  \begin{verbatim}
+  tensor([1, 2, 3], device='cuda:0')
+  \end{verbatim}
+  
+  \item 损失函数（Loss Function）：
+  \begin{verbatim}
+  criterion = nn.MSELoss()
+  output = model(x)
+  target = torch.tensor([1.0, 2.0, 3.0], device=device)
+  loss = criterion(output, target)
+  print(loss)
+  \end{verbatim}
+  结果：
+  \begin{verbatim}
+  tensor(5., device='cuda:0')
+  \end{verbatim}
+  
+  \item 自动微分（Autograd）：
+  \begin{verbatim}
+  x = torch.tensor([1.0, 2.0, 3.0], requires_grad=True)
+  y = x ** 2
+  y.backward()
+  print(x.grad)
+  \end{verbatim}
+  结果：
+  \begin{verbatim}
+  tensor([2., 4., 6.])
+  \end{verbatim}
+  
+  \item 数据加载和预处理：
+  \begin{verbatim}
+  from torchvision import datasets, transforms
+  transform = transforms.Compose([
+      transforms.ToTensor(),
+      transforms.Normalize((0.5,), (0.5,))
+  ])
+  train_dataset = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
+  train_loader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=32, shuffle=True)
+  \end{verbatim}
+  
+  \item 定义神经网络：
+  \begin{verbatim}
+  import torch.nn as nn
+  import torch.nn.functional as F
+
+  class Net(nn.Module):
+      def __init__(self):
+          super(Net, self).__init__()
+          self.fc1 = nn.Linear(3, 5)
+
+      def forward(self, x):
+          x = F.relu(self.fc1(x))
+          return x
+
+  net = Net()
+  print(net)
+  \end{verbatim}
+  结果：
+  \begin{verbatim}
+  Net((fc1): Linear(in_features=3, out_features=5, bias=True))
+  \end{verbatim}
+\end{enumerate}
+
+
+\section*{二、解题感悟}
+Python 的 pdb 调试器可以逐行执行代码，检查变量状态，这对于理解复杂逻辑和解决难以发现的 bug 非常有帮助。除此之外，我们可以通过使用cProfile、timeit或line\_profiler等工具，可以准确地测量代码的运行时间和性能瓶颈，从而进行有针对性的优化。在学习过程中，我发现元编程是一种强大的编程范式，它可以让代码更加灵活。我们可以通过合理使用元编程可以极大地提高代码的灵活性和可维护性。PyTorch 是一个功能强大的深度学习框架，它提供了动态计算图和丰富的神经网络构建工具。在简单的学习后，我掌握了一些基本技能，如创建模型，修改模型等等。
+
+总之，这些工具和技术是现代软件开发的重要组成部分。它们不仅可以帮助我们提高开发效率，还可以让我们编写更高质量、更高效的代码。不断学习和实践是我们提高这些技能的关键。
+
+Github地址：\url{https://github.com/Gao-py/class_homework}
+\end{document}
